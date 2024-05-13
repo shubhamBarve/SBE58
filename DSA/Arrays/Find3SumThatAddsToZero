@@ -1,0 +1,49 @@
+3 Sum : Find triplets that add up to a zero
+
+Input:
+ nums = [-1,0,1,2,-1,-4]
+Output:
+ [[-1,-1,2],[-1,0,1]]
+
+
+Brute Force Approach
+Using 3 for loops
+    for i - n
+        for j-> i+1 to n
+            for k -> j+1 to n
+                if num[i]+num[j]+num[k] == 0
+                    print anwer
+
+
+Better Approach
+    using 2 loops
+
+        for i to n
+            for j -> i+1 to n
+                set to store the anwers
+                    third value = - (Arr[i]+arr[j])
+                        if it is present in set store the answer in sorted way
+                        and add the jth element in set
+
+
+optimal approach
+    using 2 pointer approach
+sort the array
+i will be at 0 ,
+j will be at i+1
+and k will be at n
+    for i =0 to n
+        if(i>0 && arr[i]==arr[i-1] continue
+        j= i+1 and  k = n-1;
+        while (j<k){
+            sum = arr[i]+arr[k]+arr[j]
+            if(sum>0)
+                k--
+             else if (sum<0)
+                j++
+
+                else {
+                    j++,
+                    k---
+                    do it while we do not have different value for j and k
+                }
