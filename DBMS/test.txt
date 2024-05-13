@@ -1,0 +1,174 @@
+mysql> create table student(sname varchar(15) not null,subject varchar(15) not null,marks int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sname   | varchar(15) | NO   |     | NULL    |       |
+| subject | varchar(15) | NO   |     | NULL    |       |
+| marks   | int(11)     | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> alter table student modify column marks int not null;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sname   | varchar(15) | NO   |     | NULL    |       |
+| subject | varchar(15) | NO   |     | NULL    |       |
+| marks   | int(11)     | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student values('SHUBHAM','DBMS',60),('SAISH','DBMS',65),('ROHAN','TOC',80),('SHUBHAM','CNT',89),('SHIVAM','TOC',40),('OMKAR','TOC',50);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++---------+---------+-------+
+| sname   | subject | marks |
++---------+---------+-------+
+| SHUBHAM | DBMS    |    60 |
+| SAISH   | DBMS    |    65 |
+| ROHAN   | TOC     |    80 |
+| SHUBHAM | CNT     |    89 |
+| SHIVAM  | TOC     |    40 |
+| OMKAR   | TOC     |    50 |
++---------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select max(marks) from student group by subject;
++------------+
+| max(marks) |
++------------+
+|         89 |
+|         65 |
+|         80 |
++------------+
+3 rows in set (0.03 sec)
+
+mysql> select max(marks),subject from student group by subject;
++------------+---------+
+| max(marks) | subject |
++------------+---------+
+|         89 | CNT     |
+|         65 | DBMS    |
+|         80 | TOC     |
++------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select max(marks),subject from student group by subject having subject='DBMS';
++------------+---------+
+| max(marks) | subject |
++------------+---------+
+|         65 | DBMS    |
++------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select name,max(marks),subject from student group by subject having subject='DBMS';
+ERROR 1054 (42S22): Unknown column 'name' in 'field list'
+mysql> select sname,max(marks),subject from student group by subject having subject='DBMS';
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'shubh.student.sname' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select sname,subject from student where marks=(select max(marks) from student group by subject having subject='DBMS');
++-------+---------+
+| sname | subject |
++-------+---------+
+| SAISH | DBMS    |
++-------+---------+
+1 row in set (0.06 sec)
+
+mysql> select avg(marks),subject from student group by subject having subject='TOC';
++------------+---------+
+| avg(marks) | subject |
++------------+---------+
+|    56.6667 | TOC     |
++------------+---------+
+1 row in set (0.17 sec)
+
+mysql> mysql> update student set subject="CNT" where marks=50;
+ERROR 1054 (42S22): Unknown column 'ubject' in 'field list'
+mysql> update student set subject="CNT" where marks=50;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select avg(marks),subject from student group by subject having subject='TOC';
++------------+---------+
+| avg(marks) | subject |
++------------+---------+
+|    60.0000 | TOC     |
++------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from student;
++---------+---------+-------+
+| sname   | subject | marks |
++---------+---------+-------+
+| SHUBHAM | DBMS    |    60 |
+| SAISH   | DBMS    |    65 |
+| ROHAN   | TOC     |    80 |
+| SHUBHAM | CNT     |    89 |
+| SHIVAM  | TOC     |    40 |
+| OMKAR   | CNT     |    50 |
++---------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select min(marks),subject from student group by subject having subject='CNT';
++------------+---------+
+| min(marks) | subject |
++------------+---------+
+|         50 | CNT     |
++------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select sname from student where marks=(select min(marks),subject from student group by subject having subject='CNT');
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select sname from student where marks=(select min(marks) from student group by subject having subject='CNT');
++-------+
+| sname |
++-------+
+| OMKAR |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select sname,subject from student where marks=(select min(marks) from student group by subject having subject='CNT');
++-------+---------+
+| sname | subject |
++-------+---------+
+| OMKAR | CNT     |
++-------+---------+
+1 row in set (0.01 sec)
+
+mysql> select sname,subject,marks from student where marks=(select min(marks) from student group by subject having subject='CNT');
++-------+---------+-------+
+| sname | subject | marks |
++-------+---------+-------+
+| OMKAR | CNT     |    50 |
++-------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select sname,subject,marks from student where marks=(select max(marks) from student group by subject having subject='CNT');
++---------+---------+-------+
+| sname   | subject | marks |
++---------+---------+-------+
+| SHUBHAM | CNT     |    89 |
++---------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into student  values('RAJ','CNT',89);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select sname,subject,marks from student where marks=(select max(marks) from student group by subject having subject='CNT');
++---------+---------+-------+
+| sname   | subject | marks |
++---------+---------+-------+
+| SHUBHAM | CNT     |    89 |
+| RAJ     | CNT     |    89 |
++---------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql>
