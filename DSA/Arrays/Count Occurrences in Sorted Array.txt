@@ -12,3 +12,12 @@ Brute Force approach
         increas count
 
         return count
+
+
+
+        optimal approach
+
+        use binary search
+        find the number in first occurence
+        and find the numbers second occurence
+        (last - first) + 1
