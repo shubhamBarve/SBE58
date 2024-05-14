@@ -1,0 +1,14 @@
+Count Occurrences in Sorted Array
+Example 1:
+Input:
+ N = 7,  X = 3 , array[] = {2, 2 , 3 , 3 , 3 , 3 , 4}
+Output
+: 4
+
+
+Brute Force approach
+    i to n
+     if elem is targer
+        increas count
+
+        return count
