@@ -1,0 +1,23 @@
+We need to find the element which appears only once
+all the other element appears more than one time
+
+and the array is sorted
+
+Input Format:
+ arr[] = {1,1,2,2,3,3,4,5,5,6,6}
+Result: 4
+
+Brute Force approach
+
+    traverse through array
+     update miniCount with the count whichever is less
+
+
+optimal approach
+
+consider the edge cases for 1 and first element as well as the element which is at last
+    apply binary search
+        if(mid is not eqal to mid+1 and mid-1 )
+            we found the elem
+
+         if(mid
