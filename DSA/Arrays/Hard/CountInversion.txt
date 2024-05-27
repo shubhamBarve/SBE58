@@ -1,0 +1,15 @@
+Find th e number of pairs in which
+
+a[i]>a[j]
+
+
+brute force approach
+
+use 2 loops and count if
+arr[i]>arr[j]
+
+
+optimal solution
+
+using merge sort
+
